@@ -4,11 +4,11 @@ const CACHE_NAME = 'iss-app-v1';
 const APP_SHELL = [
   './index.html',
   './manifest.json',
-  './js/pricing.js',
-  './js/store.js',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-512.png'
+  './pricing.js',
+  './store.js',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -36,7 +36,7 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   if (req.url.includes('studio.html')) return; // let the studio always hit the network
 
-  const isIcon = req.url.includes('/icons/');
+  const isIcon = /icon-(192|512|maskable-512)\.png$/.test(req.url) || /favicon-32\.png$|apple-touch-icon\.png$/.test(req.url);
   if (isIcon) {
     event.respondWith(
       caches.match(req).then(cached => cached || fetch(req))
